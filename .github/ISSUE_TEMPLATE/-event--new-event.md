@@ -7,7 +7,9 @@ labels:
 ---
 
 **Event Name:** guildMemberAdd
+
 **Event Action Description:** Greets the user that joins the server
+
 **Permissions Required:**
 - Send Messages
 
