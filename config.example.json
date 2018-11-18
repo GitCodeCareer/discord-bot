@@ -1,0 +1,13 @@
+{
+   "clientID": "",
+   "clientSecret": "",
+   "token": "",
+   "cmdPrefix": "!",
+   "welcomeMessageChannel": "💬-all-chat",
+   "database": {
+      "host": "localhost",
+      "dbname": "",
+      "user": "",
+      "password": ""
+   }
+}

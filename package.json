@@ -1,0 +1,13 @@
+{
+  "name": "makergains-bot",
+  "version": "1.0.0",
+  "description": "MakerGains Discord Bot",
+  "main": "index.js",
+  "repository": "https://github.com/SpakMedia/discord-bot.git",
+  "author": "SpakMedia",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  }
+}
