@@ -1,9 +1,15 @@
 exports.run = (client, message, args) => {
-   if(!args || args.size < 1) return message.reply("Must provide a base64 encoded string that contains the announcement.");
    
-   let buff = Buffer.from(args[0], 'base64');  
-   let text = buff.toString('ascii');
+   if (message.member.roles.find(val => val.id === '468892518604472330')) {
+      if(!args || args.size < 1) return message.reply("Must provide a base64 encoded string that contains the announcement.");
 
-   message.channel.send(text);
-   message.delete();
+      let buff = Buffer.from(args[0], 'base64');  
+      let text = buff.toString('ascii');
+
+      message.channel.send(text);
+      message.delete();
+   } else {
+      message.reply('You must be an admin in order to run this command.');
+   }
+    
 };
