@@ -17,5 +17,5 @@ Getting started with your first pull request (PR) is easy! Just follow these ste
 5. Duplicate the `config.example.json` file and rename it to `config.json` and fill in the appropriate values from the Discord Developer portal. 
 6. Create a new javascript file in the commands folder that is named after the command you want to add. If you want to add a new event instead, make the event in `index.js`.
 7. To test the bot, run `node index.js`
-8. Make sure to debug the new command and test it a lot. If you need help, ask in the CodeCareer Discord anytime! Use the [#open-source-😺](https://discord.gg/nVCtqvQ) channel. When you are ready to submit the PR, head back to this page and click `New pull request".
+8. Make sure to debug the new command and test it a lot. If you need help, ask in the CodeCareer Discord anytime! Use the [#open-source-😺](https://discord.gg/nVCtqvQ) channel. When you are ready to submit the PR, head back to this page and click `New pull request`.
 9. Wait patiently for an admin to look it over and if everything checks out, it will be merged.
