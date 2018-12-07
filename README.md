@@ -1,4 +1,4 @@
-# MakerGains Discord Bot
+# CodeCareer Discord Bot
 
 To use, first duplicate `config.example.json` as `config.json` and fill in the appropriate values. 
 
