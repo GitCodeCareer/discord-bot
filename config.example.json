@@ -4,6 +4,7 @@
    "token": "",
    "cmdPrefix": "!",
    "welcomeMessageChannel": "💬-all-chat",
+   "adminRoleId": "",
    "database": {
       "host": "localhost",
       "dbname": "",

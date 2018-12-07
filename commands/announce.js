@@ -1,6 +1,8 @@
+const config = require("../config.json");
+
 exports.run = (client, message, args) => {
    
-   if (message.member.roles.find(val => val.id === '468892518604472330')) {
+   if (message.member.roles.find(val => val.id === config.adminRoleId)) {
       if(!args || args.size < 1) return message.reply("Must provide a base64 encoded string that contains the announcement.");
 
       let buff = Buffer.from(args[0], 'base64');  
