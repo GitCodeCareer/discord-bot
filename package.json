@@ -1,10 +1,10 @@
 {
-  "name": "makergains-bot",
+  "name": "codecareer-discord-bot",
   "version": "1.0.0",
-  "description": "MakerGains Discord Bot",
+  "description": "CodeCareer Discord Bot",
   "main": "index.js",
-  "repository": "https://github.com/SpakMedia/discord-bot.git",
-  "author": "SpakMedia",
+  "repository": "https://github.com/GitCodeCareer/discord-bot.git",
+  "author": "CodeCareer.org",
   "license": "MIT",
   "private": true,
   "dependencies": {
