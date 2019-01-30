@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 const config = require("../config.json");
 
-exports.run = async (client, message, args) => {
+exports.run = (client, message, args) => {
 
    if(!args || args.length < 1) return message.reply(`Must type your question after the command. Type "!helpme PRIVATE" if you would like your question to remain confidential`);
 
@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
       .addField("Request", request, false)
       .addField("Date of Request", message.createdAt, true);
 
-      await message.author.send({embed: member_embed})
+      message.author.send({embed: member_embed})
 
       const assignee = message.guild.roles.get(config.adminRoleId).members.random(1)
 
@@ -28,7 +28,7 @@ exports.run = async (client, message, args) => {
       .addField("Date of Request", message.createdAt, true);
 
       const channel = message.guild.channels.get(config.helpLogChannelId)
-      await channel.send({embed: staff_embed})
+      channel.send({embed: staff_embed})
 
       message.delete()
 
