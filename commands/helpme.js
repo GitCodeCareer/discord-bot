@@ -4,7 +4,7 @@ const config = require("../config.json");
 
 exports.run = (client, message, args) => {
 
-   if(!args || args.length < 1) return message.reply(`Must type your question after the command. Type "!helpme PRIVATE" if you would like your question to remain confidential`);
+   if(!args || args.length < 1) return message.reply(`, you must type your question after the command. You may also use "!helpme PRIVATE" if you would like your question to remain confidential.`);
 
    const request = args.join(' ');
 
