@@ -5,10 +5,11 @@ const config = require("../config.json");
 exports.run = (client, message, args) => {
    
    if (message.member.roles.find(val => val.id === config.adminRoleId)) {
-      if(!args || args.size < 1) return message.reply("Must provide a base64 encoded string that contains the poll question.");
+      if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");
 
-      let buff = Buffer.from(args[0], 'base64');  
-      let text = "**POLL:** " + buff.toString('ascii');
+      const question = args.join(' ')
+  
+      let text = "**POLL:** " + question
 
       message.channel.send(text)
          .then(function (msg) {

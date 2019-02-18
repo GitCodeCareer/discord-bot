@@ -3,12 +3,11 @@ const config = require("../config.json");
 exports.run = (client, message, args) => {
    
    if (message.member.roles.find(val => val.id === config.adminRoleId)) {
-      if(!args || args.size < 1) return message.reply("Must provide a base64 encoded string that contains the announcement.");
+      if(!args || args.length < 1) return message.reply("Must provide the text for the announcement after the command.");
 
-      let buff = Buffer.from(args[0], 'base64');  
-      let text = buff.toString('ascii');
+      const announcement = args.join(' ');
 
-      message.channel.send(text);
+      message.channel.send(announcement);
       message.delete();
    } else {
       message.reply('You must be an admin in order to run this command.');
