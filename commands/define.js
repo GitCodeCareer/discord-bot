@@ -1,7 +1,7 @@
 /**
  * author: ap4gh(Github) aka. debjay(on CodeCareer Discord Server)
  * command_name: define
- * version: 2.1
+ * version: 2.3
  * description: Search for passed text on wikipedia or ddg.
  * npm_dependencies: { request }
  */
