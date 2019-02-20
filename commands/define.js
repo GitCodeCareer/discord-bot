@@ -92,16 +92,22 @@ exports.run = (client, message, args) => {
                   return true;
                 }
               });
-              message.channel.send(msg);
             } else {
               // If abstractText is found:
-              let msg = `Definition for \`${searchPhrase}\` `;
+              msg = `Definition for \`${searchPhrase}\` `;
               msg += '```' + abstractText + '```';
+            }
+            try {
               message.channel.send(msg);
+            } catch (e) {
+              // notify end-user and maintainer about the error.
+              notifyErrors(message, `!define ${searchPhrase}`, e);
             }
           } else {
             console.log(`Response status code: ${response.statusCode}`);
             console.log(error || 'No errors while fetching data!');
+            // notify end-user and maintainer about the error.
+            notifyErrors(message, `!define ${searchPhrase}`, error);
           }
         }
       );
@@ -164,14 +170,24 @@ exports.run = (client, message, args) => {
             }
             // creating a message format string:
             let formattedMsg = ':mag: `' + wikiSearchPhrase + '`\n';
-            if (firstDefinition)
-              formattedMsg += '```' + firstDefinition + '```';
-            formattedMsg += ':link: ' + wikipediaPageLink + '\n\n';
-            // send message:
-            message.channel.send(formattedMsg);
+            formattedMsg += firstDefinition;
+            // send message and try catch errors:
+            try {
+              message.channel.send(formattedMsg);
+            } catch (e) {
+              // notify end-user and maintainer about the error.
+              notifyErrors(message, `!define wiki ${wikiSearchPhrase}`, e);
+            }
           } else {
-            console.log(`Response status code: ${response.statusCode}`);
+            // Report errors in log.
+            console.log(
+              `ERROR in requesting: Response status code: ${
+                response.statusCode
+              }`
+            );
             console.log(error || 'No errors while fetching data!');
+            // notify end-user and maintainer about the error.
+            notifyErrors(message, `!define wiki ${wikiSearchPhrase}`, error);
           }
         }
       );
