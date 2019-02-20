@@ -1,13 +1,28 @@
 /**
  * author: ap4gh(Github) aka. debjay(on CodeCareer Discord Server)
  * command_name: define
- * version: 2.1
+ * version: 2.3
  * description: Search for passed text on wikipedia or ddg.
  * npm_dependencies: { request }
  */
 
 const request = require('request');
 // This func will return a formatted URL to get instant answer data from ddg in JSON format
+
+/**
+ * Notify about errors to the maintainer and end-user.
+ * This func takes the command used and error thrown
+ * when the command fails. It notify maintainer via
+ * direct message, change maintainer ID in the vari-
+ * able below.
+ */
+const maintainerID = '274434863711518722';
+const notifyErrors = (message, commandUsed, err = '') => {
+  message.channel.send('Some internal error occured!');
+  const author = message.guild.member(maintainerID);
+  author.send(`Error in command ${commandUsed}`);
+  author.send('```' + err + '```');
+};
 
 const generateQueryURL = (serve, phrase) => {
   const queryURLs = {
@@ -52,8 +67,15 @@ exports.run = (client, message, args) => {
             // Abstract text
             const abstractText = data['AbstractText'];
             // If no abstractText is found then:
+            let msg = '';
             if (!abstractText) {
-              let msg = `Definition not provided :shrug: please check these following links or try \`!define wiki ${searchPhrase}\` for wikipedia results.\n\n`;
+              msg = `Definition not provided :shrug: ${
+                data['RelatedTopics'].length > 0
+                  ? 'please check these following links or'
+                  : ''
+              } try \`!define wiki ${searchPhrase}\` for wikipedia results.\n\n`;
+              // maximum number of related topic info to be sent
+              let numOfRelatedTopics = 3;
               data['RelatedTopics'].every((topic, index) => {
                 /**
                  * For some related topics, no links are provided,
@@ -64,19 +86,28 @@ exports.run = (client, message, args) => {
                   return false;
                 } else {
                   msg += `${topic['FirstURL']}\n*${topic['Text']}*\n\n`;
+                  numOfRelatedTopics -= 1;
+                  // if all the three topic info is collected, exit.
+                  if (numOfRelatedTopics === 0) return false;
                   return true;
                 }
               });
-              message.channel.send(msg);
             } else {
               // If abstractText is found:
-              let msg = `Definition for \`${searchPhrase}\` `;
+              msg = `Definition for \`${searchPhrase}\` `;
               msg += '```' + abstractText + '```';
+            }
+            try {
               message.channel.send(msg);
+            } catch (e) {
+              // notify end-user and maintainer about the error.
+              notifyErrors(message, `!define ${searchPhrase}`, e);
             }
           } else {
             console.log(`Response status code: ${response.statusCode}`);
             console.log(error || 'No errors while fetching data!');
+            // notify end-user and maintainer about the error.
+            notifyErrors(message, `!define ${searchPhrase}`, error);
           }
         }
       );
@@ -103,22 +134,60 @@ exports.run = (client, message, args) => {
           if (!error && response.statusCode === 200) {
             // JSON parsed data is an array containing 4 elements:
             const data = JSON.parse(body);
-            // definition and links:
-            const definition = data[2];
+            // extracted definition and links:
+            const definitions = data[2];
             const links = data[3];
-            // most accurate info:
-            const firstDefinition = definition[0];
-            const wikipediaPageLink = links[0];
+            // wikipedia page link for main topic:
+            let wikipediaPageLink = ':link: ' + links[0];
+            // first definition provided by wikipedia:
+            let firstDefinition = definitions[0];
+            /**
+             * first definition may be empty, undefined or
+             * placeholder text. It should be checked before
+             * adding it to the main response.
+             */
+            // CASE 1: If firstDefinition is empty:
+            if (!firstDefinition) {
+              firstDefinition = '```No information provided.```';
+            } // CASE 2: If it is a placeholder text(inaccurate definition):
+            else if (firstDefinition.match(/may refer to/g)) {
+              firstDefinition = '```' + firstDefinition + '\n\n';
+              // no wikipedia page link if accurate definition is not provided.
+              wikipediaPageLink = '';
+              /**
+               * NOTE: Discord only allows a max. of 2000 words
+               * to be sent in one go. Hence, I have to shorten
+               * the message to send only 3 related topic info.
+               */
+              for (i = 1; i < 4; i++) {
+                firstDefinition += i + '. ' + definitions[i] + '\n\n';
+              }
+              firstDefinition += '```';
+            } // CASE 3: firstDefinition is provided:
+            else {
+              firstDefinition =
+                '```' + firstDefinition + '```' + wikipediaPageLink;
+            }
             // creating a message format string:
             let formattedMsg = ':mag: `' + wikiSearchPhrase + '`\n';
-            if (firstDefinition)
-              formattedMsg += '```' + firstDefinition + '```';
-            formattedMsg += ':link: ' + wikipediaPageLink + '\n\n';
-            // send message:
-            message.channel.send(formattedMsg);
+            formattedMsg += firstDefinition;
+            // send message and try catch errors:
+            try {
+              message.channel.send(formattedMsg);
+            } catch (e) {
+              // notify end-user and maintainer about the error.
+              notifyErrors(message, `!define wiki ${wikiSearchPhrase}`, e);
+            }
           } else {
-            console.log(`Response status code: ${response.statusCode}`);
+            // Report errors in log.
+            console.log(
+              `ERROR in requesting: Response status code: ${
+                response.statusCode
+              }`
+            );
             console.log(error || 'No errors while fetching data!');
+            // notify end-user and maintainer about the error.
+            notifyErrors(message, `!define wiki ${wikiSearchPhrase}`, error);
           }
         }
       );
