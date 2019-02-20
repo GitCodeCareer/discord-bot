@@ -103,12 +103,40 @@ exports.run = (client, message, args) => {
           if (!error && response.statusCode === 200) {
             // JSON parsed data is an array containing 4 elements:
             const data = JSON.parse(body);
-            // definition and links:
-            const definition = data[2];
+            // extracted definition and links:
+            const definitions = data[2];
             const links = data[3];
-            // most accurate info:
-            const firstDefinition = definition[0];
-            const wikipediaPageLink = links[0];
+            // wikipedia page link for main topic:
+            let wikipediaPageLink = ':link: ' + links[0];
+            // first definition provided by wikipedia:
+            let firstDefinition = definitions[0];
+            /**
+             * first definition may be empty, undefined or
+             * placeholder text. It should be checked before
+             * adding it to the main response.
+             */
+            // CASE 1: If firstDefinition is empty:
+            if (!firstDefinition) {
+              firstDefinition = '```No information provided.```';
+            } // CASE 2: If it is a placeholder text(inaccurate definition):
+            else if (firstDefinition.match(/may refer to/g)) {
+              firstDefinition = '```' + firstDefinition + '\n\n';
+              // no wikipedia page link if accurate definition is not provided.
+              wikipediaPageLink = '';
+              /**
+               * NOTE: Discord only allows a max. of 2000 words
+               * to be sent in one go. Hence, I have to shorten
+               * the message to send only 3 related topic info.
+               */
+              for (i = 1; i < 4; i++) {
+                firstDefinition += i + '. ' + definitions[i] + '\n\n';
+              }
+              firstDefinition += '```';
+            } // CASE 3: firstDefinition is provided:
+            else {
+              firstDefinition =
+                '```' + firstDefinition + '```' + wikipediaPageLink;
+            }
             // creating a message format string:
             let formattedMsg = ':mag: `' + wikiSearchPhrase + '`\n';
             if (firstDefinition)
