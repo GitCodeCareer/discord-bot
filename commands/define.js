@@ -64,6 +64,9 @@ exports.run = (client, message, args) => {
                   return false;
                 } else {
                   msg += `${topic['FirstURL']}\n*${topic['Text']}*\n\n`;
+                  numOfRelatedTopics -= 1;
+                  // if all the three topic info is collected, exit.
+                  if (numOfRelatedTopics === 0) return false;
                   return true;
                 }
               });
