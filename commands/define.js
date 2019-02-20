@@ -52,8 +52,15 @@ exports.run = (client, message, args) => {
             // Abstract text
             const abstractText = data['AbstractText'];
             // If no abstractText is found then:
+            let msg = '';
             if (!abstractText) {
-              let msg = `Definition not provided :shrug: please check these following links or try \`!define wiki ${searchPhrase}\` for wikipedia results.\n\n`;
+              msg = `Definition not provided :shrug: ${
+                data['RelatedTopics'].length > 0
+                  ? 'please check these following links or'
+                  : ''
+              } try \`!define wiki ${searchPhrase}\` for wikipedia results.\n\n`;
+              // maximum number of related topic info to be sent
+              let numOfRelatedTopics = 3;
               data['RelatedTopics'].every((topic, index) => {
                 /**
                  * For some related topics, no links are provided,
