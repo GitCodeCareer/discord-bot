@@ -9,6 +9,21 @@
 const request = require('request');
 // This func will return a formatted URL to get instant answer data from ddg in JSON format
 
+/**
+ * Notify about errors to the maintainer and end-user.
+ * This func takes the command used and error thrown
+ * when the command fails. It notify maintainer via
+ * direct message, change maintainer ID in the vari-
+ * able below.
+ */
+const maintainerID = '274434863711518722';
+const notifyErrors = (message, commandUsed, err = '') => {
+  message.channel.send('Some internal error occured!');
+  const author = message.guild.member(maintainerID);
+  author.send(`Error in command ${commandUsed}`);
+  author.send('```' + err + '```');
+};
+
 const generateQueryURL = (serve, phrase) => {
   const queryURLs = {
     wiki: `https://en.wikipedia.org/w/api.php?action=opensearch&list=search&search=${phrase}&format=json&formatversion=2`,
