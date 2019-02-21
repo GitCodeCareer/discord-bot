@@ -232,6 +232,6 @@ GUIDE
 // run function for !define command:
 exports.run = (client, message, args) => {
   if (args.length === 0)
-    message.channel.send('Try `!define --help` to get command guide.');
+    return message.channel.send('Try `!define --help` to get command guide.');
   runUserCommand(message, args, args[0]);
 };
