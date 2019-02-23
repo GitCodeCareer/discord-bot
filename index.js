@@ -7,28 +7,15 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', msg => {
-   if (msg.author.bot) return;
-   if(msg.content.indexOf(config.cmdPrefix) !== 0) return;
- 
-   const args = msg.content.slice(config.cmdPrefix.length).trim().split(/ +/g);
-   const command = args.shift().toLowerCase().replace('/', '');
- 
-   try {
-     let commandFile = require(`./commands/${command}.js`);
-     commandFile.run(client, msg, args);
-   } catch (err) {
-     console.error(err);
-   }
-});
+const fs = require('fs');
 
-client.on('guildMemberAdd', member => {
-  // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find(ch => ch.name === config.welcomeMessageChannel);
-  // Do nothing if the channel wasn't found on this server
-  if (!channel) return;
-  // Send the message, mentioning the member
-  channel.send(`Welcome to the server, ${member}`);
+fs.readdir('./events/', (err, files) => {
+  files.forEach(file => {
+    let eventName = file.split('.')[0]
+    let eventFile = require(`./events/${file}`);
+    console.log("event initiated");
+    client.on(eventName, (object) => eventFile.run(client, object));    
+  });
 });
 
 client.login(config.token);
