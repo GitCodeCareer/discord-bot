@@ -5,7 +5,7 @@
 const maintainerID = '274434863711518722';
 /**
  * command_name: define
- * version: 3.0
+ * version: 3.0.1
  * description: Provides definition for words from web.
  * npm_dependencies: { request, request-promise-native }
  */
@@ -192,7 +192,7 @@ const wikipediaOpenSearch = async (message, args) => {
  *      •• HELP COMMAND ••
  */
 const showHelp = (message, args) => {
-  message.channel.send(`
+  sendMessage(message, `
     \`\`\`
 NAME
   define -- provide definition for words from web.
@@ -232,6 +232,6 @@ GUIDE
 // run function for !define command:
 exports.run = (client, message, args) => {
   if (args.length === 0)
-    return message.channel.send('Try `!define --help` to get command guide.');
+    return sendMessage(message, 'Use `!define --help` to get command guide.');
   runUserCommand(message, args, args[0]);
 };
