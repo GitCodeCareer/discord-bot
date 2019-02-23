@@ -13,7 +13,7 @@ fs.readdir('./events/', (err, files) => {
   files.forEach(file => {
     let eventName = file.split('.')[0]
     let eventFile = require(`./events/${file}`);
-    console.log("event initiated");
+    
     client.on(eventName, (object) => eventFile.run(client, object));    
   });
 });
