@@ -1,4 +1,5 @@
 global.Config = require('./utils/config').config;
+global.Auth = require('./utils/auth').auth;
 
 const Discord = require("discord.js");
 const client = new Discord.Client();

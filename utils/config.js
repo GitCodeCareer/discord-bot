@@ -44,12 +44,8 @@ class Config {
       return this.config.channels[name]
    }
 
-   getRole(role_type=null) {
-      if (role_type != null) {
-         return this.config.roles[role_type]
-      } else {
-         return this.config.roles.staff
-      }
+   getRole(role_type) {
+      return this.config.roles[role_type]
    }
 
    // Setters

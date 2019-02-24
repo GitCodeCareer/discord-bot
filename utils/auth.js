@@ -1,25 +1,22 @@
-const config = require("../config.json");
-
 class Auth {
 
-   constructor(client) {
-      this.client = client
+   constructor() {
+      
    }
 
-   isAdmin() {
-
+   isAdmin(member) {
+      return member.roles.find(val => val.id === Config.getRole("admin"))
    }
 
-   isMod() {
-   
+   isMod(member) {
+      return member.roles.find(val => val.id === Config.getRole("mod"))
    }
 
-   isRole(role="") {
-
-      return
+   isRole(role_type) {
+      return member.roles.find(val => val.id === Config.getRole(role_type))
    }
 }
 
 module.exports = {
-   Auth
+   auth: new Auth
 }
