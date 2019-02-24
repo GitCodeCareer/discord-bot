@@ -4,7 +4,7 @@ const config = require("../config.json");
 
 exports.run = (client, message, args) => {
    
-   if (message.member.roles.find(val => val.id === config.adminRoleId)) {
+   if (message.member.roles.find(val => val.id === Config.getRole(role_type="admin"))) {
       if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");
 
       const question = args.join(' ')

@@ -1,11 +1,9 @@
-const config = require("../config.json");
-
 exports.run = (client, msg) => {
 
    if (msg.author.bot) return;
-   if(msg.content.indexOf(config.cmdPrefix) !== 0) return;
+   if(msg.content.indexOf(Config.getCommandPrefix()) !== 0) return;
  
-   const args = msg.content.slice(config.cmdPrefix.length).trim().split(/ +/g);
+   const args = msg.content.slice(Config.getCommandPrefix().length).trim().split(/ +/g);
    const command = args.shift().toLowerCase().replace('/', '');
  
    try {

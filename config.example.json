@@ -1,11 +1,15 @@
 {
-   "clientID": "",
-   "clientSecret": "",
-   "token": "",
-   "cmdPrefix": "!",
-   "welcomeMessageChannel": "💬-all-chat",
-   "helpLogChannelId": "",
-   "adminRoleId": "",
+   "botToken": "",
+   "commandPrefix": "!",
+   "channels": {
+      "joins": "",
+      "tickets": ""
+   },
+   "roles": {
+      "admin": "",
+      "mod": "",
+      "staff": []
+   },
    "database": {
       "host": "localhost",
       "dbname": "",
