@@ -1,4 +1,5 @@
-const Discord = require("discord.js");
+import Discord from "discord.js";
+import { Config } from '../index';
 
 exports.run = (client, message, args) => {
 
@@ -16,7 +17,7 @@ exports.run = (client, message, args) => {
 
       message.author.send({embed: member_embed})
 
-      const assignee = message.guild.roles.get(Config.getRole(role_type="admin")).members.random(1)
+      const assignee = message.guild.roles.get(Config.getRole("admin")).members.random(1)
 
       const staff_embed = new Discord.RichEmbed()
       .setTitle("CodeCareer Assistance")

@@ -1,3 +1,5 @@
+import { Config } from '../index';
+
 exports.run = (client, member) => {
 
    // Send the message to a designated channel on a server:

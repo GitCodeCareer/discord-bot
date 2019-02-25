@@ -1,3 +1,5 @@
+import { Auth } from '../index';
+
 exports.run = (client, message, args) => {
    
    if (Auth.isAdmin(message.member)) {

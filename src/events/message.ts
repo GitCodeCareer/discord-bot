@@ -1,3 +1,5 @@
+import { Config } from '../index';
+
 exports.run = (client, msg) => {
 
    if (msg.author.bot) return;
