@@ -67,5 +67,5 @@ class Config {
 }
 
 module.exports = {
-   config: new Config()
+   config: new Config
 }
