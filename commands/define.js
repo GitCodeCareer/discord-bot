@@ -12,7 +12,7 @@ const maintainerID = '274434863711518722';
 
 const request = require('request-promise-native');
 
-const maxRelatedTopics = 3;
+const maxRelatedTopics = 4;
 
 /*
     ------------ HELPER FUNCTIONS ------------
@@ -175,9 +175,11 @@ const wikipediaOpenSearch = async (message, args) => {
     // remove useless definition at index 0:
     definitions.shift();
     // collect related definition:
-    for (let d of definitions) {
-      result += `${definitions.indexOf(d) + 1}. ${d}\n\n`;
-      if (definitions.indexOf(d) === maxRelatedTopics - 1) break;
+    let nonEmptyDefinitions = [];
+    for (let d of definitions) if (d.length > 0) nonEmptyDefinitions.push(d);
+    for (let i = 0; i < maxRelatedTopics; ++i) {
+      if (nonEmptyDefinitions[i] == undefined) break;
+      result += `${i + 1}. ${nonEmptyDefinitions[i]}\n\n`;
     }
     result += '```';
   } // exact meaning is obtained:
@@ -192,7 +194,9 @@ const wikipediaOpenSearch = async (message, args) => {
  *      •• HELP COMMAND ••
  */
 const showHelp = (message, args) => {
-  sendMessage(message, `
+  sendMessage(
+    message,
+    `
     \`\`\`
 NAME
   define -- provide definition for words from web.
@@ -226,7 +230,8 @@ GUIDE
   events, news etc. and does not provide meaning of the words from
   english dictionary. DDG bang redirects will also not work here.
     \`\`\` 
-    `);
+    `
+  );
 };
 
 // run function for !define command:
