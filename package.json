@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "build:gulp": "gulp build",
+    "build:gulp": "gulp scripts",
     "watch:gulp": "gulp watch",
     "watch": "yarn run watch:gulp -s",
     "build": "yarn run build:gulp -s"
@@ -28,6 +28,7 @@
     "gulp": "^4.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.0",
-    "jest": "^24.1.0"
+    "jest": "^24.1.0",
+    "typescript": "^3.3.3333"
   }
 }
