@@ -2,7 +2,7 @@
  * author: ap4gh(Github), debjay(on CodeCareer Discord Server)
  * license: MIT https://opensource.org/licenses/MIT
  */
-const maintainerID = '274434863711518722';
+
 /**
  * command_name: define
  * version: 3.0.1
@@ -15,6 +15,7 @@ const maintainerID = '274434863711518722';
 const request = require('request-promise-native');
 
 const maxRelatedTopics = 3;
+const maintainerID = '274434863711518722';
 
 /*
     ------------ HELPER FUNCTIONS ------------
