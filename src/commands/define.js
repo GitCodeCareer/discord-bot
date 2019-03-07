@@ -10,6 +10,8 @@ const maintainerID = '274434863711518722';
  * npm_dependencies: { request, request-promise-native }
  */
 
+ // when you change this file to type script, change the following line to this format...
+ // import * as request from 'request-promise-native';
 const request = require('request-promise-native');
 
 const maxRelatedTopics = 3;
