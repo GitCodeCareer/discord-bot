@@ -1,7 +1,7 @@
 import * as Discord from "discord.js";
-import { Config } from '../index';
+import { Config } from '@bot/index';
 
-exports.run = (client, message, args) => {
+exports.run = (client: any, message: any, args: any) => {
 
    if(!args || args.length < 1) return message.reply(`, you must type your question after the command. You may also use "!helpme PRIVATE" if you would like your question to remain confidential.`);
 

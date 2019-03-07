@@ -1,10 +1,10 @@
-import * as config from './utils/config';
-import * as auth from './utils/auth';
+import * as config from '@utils/config';
+import * as auth from '@utils/auth';
 
 export const Config = new config.default()
 export const Auth = new auth.default()
 
-import * as Discord from "discord.js";
+import * as Discord from 'discord.js';
 const client = new Discord.Client();
 
 client.on('ready', () => {
@@ -20,7 +20,7 @@ fs.readdir('./dist/events/', (err, files) => {
       let eventName = file.split('.')[0]
       let eventFile = require(`./events/${eventName}.js`);
 
-      client.on(eventName, (object) => eventFile.run(client, object));
+      client.on(eventName, (object: any) => eventFile.run(client, object));
     }    
   });
 });

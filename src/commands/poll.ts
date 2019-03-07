@@ -1,6 +1,6 @@
-import { Auth } from '../index';
+import { Auth } from '@bot/index';
 
-exports.run = (client, message, args) => {
+exports.run = (client: any, message: any, args: any) => {
    
    if (Auth.isAdmin(message.member)) {
       if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");

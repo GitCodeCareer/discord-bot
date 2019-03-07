@@ -1,6 +1,6 @@
 import { Config } from '../index';
 
-exports.run = (client, msg) => {
+exports.run = (client: any, msg: any) => {
 
    if (msg.author.bot) return;
    if(msg.content.indexOf(Config.getCommandPrefix()) !== 0) return;

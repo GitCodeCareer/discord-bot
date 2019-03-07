@@ -7,10 +7,13 @@ node_modules/
 
 # Useless files
 .DS_Store
-*.lock
 
 # Private Configuration files
 config.json
 
 # Compiled Typescript
 dist/
+
+# Lock Files
+yarn.lock
+package-lock.json

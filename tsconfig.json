@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@bot/*": ["src/*"],
+            "@utils/*": ["src/utils/*"],
+            "@commands/*": ["src/commands/*"],
+            "@events/*": ["src/events/*"]
+        },
+        "target": "es2017",
+        "module": "commonjs",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "declaration": true,
+        "esModuleInterop": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "include": [
+        "src/**/*",
+        "tests/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "!node_modules/discord.js"
+    ]
+}

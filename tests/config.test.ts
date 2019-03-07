@@ -1,4 +1,4 @@
-import Config from '../src/utils/config'
+import Config from '@utils/config'
 
 const c = new Config()
 
