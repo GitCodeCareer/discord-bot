@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "discord.js": "^11.4.2",
+    "module-alias": "^2.2.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   },
@@ -33,5 +34,12 @@
     "jest": "^24.1.0",
     "ts-jest": "^24.0.0",
     "typescript": "^3.3.3333"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@bot": "dist",
+    "@utils": "dist/utils",
+    "@commands": "dist/commands",
+    "@events": "dist/events"
   }
 }
