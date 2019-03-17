@@ -1,8 +1,6 @@
-const config = require("../config.json");
-
 exports.run = (client, message, args) => {
    
-   if (message.member.roles.find(val => val.id === config.adminRoleId)) {
+   if (Auth.isAdmin(message.member)) {
       if(!args || args.length < 1) return message.reply("Must provide the text for the announcement after the command.");
 
       const announcement = args.join(' ');

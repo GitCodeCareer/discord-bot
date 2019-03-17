@@ -7,9 +7,18 @@
   "author": "CodeCareer.org",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "discord.js": "^11.4.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "babel-jest": "^24.1.0",
+    "jest": "^24.1.0"
   }
 }

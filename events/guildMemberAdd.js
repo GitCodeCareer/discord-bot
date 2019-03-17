@@ -1,9 +1,7 @@
-const config = require("../config.json");
-
 exports.run = (client, member) => {
 
    // Send the message to a designated channel on a server:
-   const channel = member.guild.channels.find(ch => ch.name === config.welcomeMessageChannel);
+   const channel = member.guild.channels.get(Config.getChannel("joins"));
 
    // Do nothing if the channel wasn't found on this server
    if (!channel) return;

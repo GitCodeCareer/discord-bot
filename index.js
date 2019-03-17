@@ -1,7 +1,8 @@
+global.Config = require('./utils/config').config;
+global.Auth = require('./utils/auth').auth;
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
-
-const config = require("./config.json");
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -18,4 +19,4 @@ fs.readdir('./events/', (err, files) => {
   });
 });
 
-client.login(config.token);
+client.login(Config.getBotToken());

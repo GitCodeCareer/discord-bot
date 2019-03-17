@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 
-const config = require("../config.json");
-
 exports.run = (client, message, args) => {
 
    if(!args || args.length < 1) return message.reply(`, you must type your question after the command. You may also use "!helpme PRIVATE" if you would like your question to remain confidential.`);
@@ -18,7 +16,7 @@ exports.run = (client, message, args) => {
 
       message.author.send({embed: member_embed})
 
-      const assignee = message.guild.roles.get(config.adminRoleId).members.random(1)
+      const assignee = message.guild.roles.get(Config.getRole(role_type="admin")).members.random(1)
 
       const staff_embed = new Discord.RichEmbed()
       .setTitle("CodeCareer Assistance")
@@ -27,7 +25,7 @@ exports.run = (client, message, args) => {
       .addField("Assignee", `${assignee.toString()}`, true)
       .addField("Date of Request", message.createdAt, true);
 
-      const channel = message.guild.channels.get(config.helpLogChannelId)
+      const channel = message.guild.channels.get(Config.getChannel("tickets"))
       channel.send({embed: staff_embed})
 
       message.delete()
