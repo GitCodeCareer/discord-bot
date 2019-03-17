@@ -7,9 +7,31 @@
   "author": "CodeCareer.org",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "test": "jest",
+    "build:gulp": "gulp scripts",
+    "watch:gulp": "gulp watch",
+    "watch": "yarn run watch:gulp -s",
+    "build": "yarn run build:gulp -s"
+  },
   "dependencies": {
     "discord.js": "^11.4.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.5",
+    "@types/request-promise": "^4.1.42",
+    "babel-jest": "^24.1.0",
+    "gulp": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-strip-comments": "^2.5.2",
+    "gulp-typescript": "^5.0.0",
+    "jest": "^24.1.0",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333"
   }
 }

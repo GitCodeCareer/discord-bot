@@ -7,7 +7,6 @@ node_modules/
 
 # Useless files
 .DS_Store
-*.lock
 
 # Private Configuration files
 config.json

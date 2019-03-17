@@ -1,10 +1,8 @@
-const Discord = require("discord.js");
+import { Auth } from '@bot/index';
 
-const config = require("../config.json");
-
-exports.run = (client, message, args) => {
+exports.run = (client: any, message: any, args: any) => {
    
-   if (message.member.roles.find(val => val.id === config.adminRoleId)) {
+   if (Auth.isAdmin(message.member)) {
       if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");
 
       const question = args.join(' ')
