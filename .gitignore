@@ -11,9 +11,5 @@ node_modules/
 # Private Configuration files
 config.json
 
-# Compiled Typescript
+# Compiled typescript files
 dist/
-
-# Lock Files
-yarn.lock
-package-lock.json
