@@ -1,8 +1,8 @@
 {
   "name": "codecareer-discord-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "CodeCareer Discord Bot",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/GitCodeCareer/discord-bot.git",
   "author": "CodeCareer.org",
   "license": "MIT",
