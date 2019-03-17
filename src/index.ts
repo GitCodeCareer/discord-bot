@@ -15,11 +15,11 @@ client.on('ready', () => {
 import * as fs from 'fs';
 import * as path from 'path';
 
-fs.readdir('./dist/events', (err, files) => {
+fs.readdir(__dirname + '/events', (err, files) => {
   files.forEach(file => {
     if (path.extname(file) == '.js') {
       let eventName = file.split('.')[0]
-      let eventFile = require(`./events/${eventName}.js`);
+      let eventFile = require(`${__dirname}/events/${eventName}.js`);
 
       client.on(eventName, (object: any) => eventFile.run(client, object));
     }    

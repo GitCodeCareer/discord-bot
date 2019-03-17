@@ -10,7 +10,7 @@ const maintainerID = '274434863711518722';
  * npm_dependencies: { request, request-promise-native }
  */
 
-import * as request from 'request-promise-native';
+const request = require('request-promise-native');
 
 const maxRelatedTopics = 4;
 

@@ -1,6 +1,6 @@
-import { Config } from '../index';
+import { Config } from '@bot/index';
 
-exports.run = (client, member) => {
+exports.run = (client: any, member: any) => {
 
    // Send the message to a designated channel on a server:
    const channel = member.guild.channels.get(Config.getChannel("joins"));

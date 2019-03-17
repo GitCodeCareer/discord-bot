@@ -1,4 +1,4 @@
-import { Config } from '../index';
+import { Config } from '@bot/index';
 
 exports.run = (client: any, msg: any) => {
 
@@ -9,7 +9,7 @@ exports.run = (client: any, msg: any) => {
    const command = args.shift().toLowerCase().replace('/', '');
  
    try {
-     let commandFile = require(`../commands/${command}.js`);
+     let commandFile = require(`@commands/${command}.js`);
      commandFile.run(client, msg, args);
    } catch (err) {
      console.error(err);
