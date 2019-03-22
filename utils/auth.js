@@ -1,22 +1,19 @@
+const Config = require('./config');
+
 class Auth {
+  constructor() {}
 
-   constructor() {
-      
-   }
+  isAdmin(member) {
+    return member.roles.find((val) => val.id === Config.getRole('admin'));
+  }
 
-   isAdmin(member) {
-      return member.roles.find(val => val.id === Config.getRole("admin"))
-   }
+  isMod(member) {
+    return member.roles.find((val) => val.id === Config.getRole('mod'));
+  }
 
-   isMod(member) {
-      return member.roles.find(val => val.id === Config.getRole("mod"))
-   }
-
-   isRole(role_type) {
-      return member.roles.find(val => val.id === Config.getRole(role_type))
-   }
+  isRole(role_type) {
+    return member.roles.find((val) => val.id === Config.getRole(role_type));
+  }
 }
 
-module.exports = {
-   auth: new Auth
-}
+module.exports = new Auth();
