@@ -1,3 +1,5 @@
+const Config = require('../utils/config');
+
 exports.run = (msg) => {
 
    if (msg.author.bot) return;
