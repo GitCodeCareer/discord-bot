@@ -1,4 +1,6 @@
-exports.run = (client, message, args) => {
+const Auth = require('../utils/auth');
+
+exports.run = (message, args) => {
    
    if (Auth.isAdmin(message.member)) {
       if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");

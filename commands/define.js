@@ -235,7 +235,7 @@ GUIDE
 };
 
 // run function for !define command:
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
   if (args.length === 0)
     return sendMessage(message, 'Use `!define --help` to get command guide.');
   runUserCommand(message, args, args[0]);

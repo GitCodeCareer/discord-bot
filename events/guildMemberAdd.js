@@ -1,4 +1,6 @@
-exports.run = (client, member) => {
+const Config = require('../utils/config');
+
+exports.run = (member) => {
 
    // Send the message to a designated channel on a server:
    const channel = member.guild.channels.get(Config.getChannel("joins"));

@@ -1,5 +1,13 @@
+const moduleAlias = require('module-alias');
+
+moduleAlias.addAliases({
+  '@root'  : __dirname,
+  '@utils': __dirname + '/utils',
+  '@events': __dirname + '/events',
+  '@commands': __dirname + '/commands'
+});
+
 const Config = require('./utils/config');
-const Auth = require('./utils/auth');
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -15,8 +23,12 @@ fs.readdir('./events/', (err, files) => {
     let eventName = file.split('.')[0];
     let eventFile = require(`./events/${file}`);
 
-    client.on(eventName, (object) => eventFile.run(client, object));
+    client.on(eventName, (object) => eventFile.run(object));
   });
 });
 
 client.login(Config.getBotToken());
+
+module.exports = {
+  client
+}

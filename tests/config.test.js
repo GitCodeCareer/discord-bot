@@ -1,4 +1,4 @@
-const Config = require('../utils/config').config;
+const Config = require('../utils/config');
 
 test('bot token returns string value', () => {
    expect(Config.getBotToken()).toMatch(/[\w\d.]+/)
