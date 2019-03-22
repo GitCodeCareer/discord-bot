@@ -1,7 +1,7 @@
-global.Config = require('./utils/config').config;
-global.Auth = require('./utils/auth').auth;
+const Config = require('./utils/config');
+const Auth = require('./utils/auth');
 
-const Discord = require("discord.js");
+const Discord = require('discord.js');
 const client = new Discord.Client();
 
 client.on('ready', () => {
@@ -11,11 +11,11 @@ client.on('ready', () => {
 const fs = require('fs');
 
 fs.readdir('./events/', (err, files) => {
-  files.forEach(file => {
-    let eventName = file.split('.')[0]
+  files.forEach((file) => {
+    let eventName = file.split('.')[0];
     let eventFile = require(`./events/${file}`);
-    
-    client.on(eventName, (object) => eventFile.run(client, object));    
+
+    client.on(eventName, (object) => eventFile.run(client, object));
   });
 });
 
