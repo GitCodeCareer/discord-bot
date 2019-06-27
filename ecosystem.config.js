@@ -7,7 +7,7 @@ module.exports = {
       {
         name      : 'cc-bot',
         script    : 'index.js',
-        interpreter: 'node@11.11.0',
+        interpreter: 'node@10.14.0',
         env: {
           NODE_ENV: "development"
         },
