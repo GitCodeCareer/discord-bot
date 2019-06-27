@@ -1,4 +1,5 @@
 const Config = require('../utils/config');
+const path = require('path')
 
 exports.run = (msg) => {
 
@@ -7,9 +8,8 @@ exports.run = (msg) => {
 
    const args = msg.content.slice(Config.getCommandPrefix().length).trim().split(/ +/g);
    const command = args.shift().toLowerCase().replace('/', '');
- 
    try {
-     let commandFile = require(`../commands/${command}.js`);
+     let commandFile = require(path.join(__dirname, '..', 'commands', `${command}.js`))
      commandFile.run(msg, args);
    } catch (err) {
      console.error(err);

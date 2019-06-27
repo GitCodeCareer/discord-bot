@@ -1,3 +1,6 @@
+// Load environment variables with dotenv
+require('dotenv').config();
+
 const moduleAlias = require('module-alias');
 
 moduleAlias.addAliases({
@@ -7,28 +10,8 @@ moduleAlias.addAliases({
   '@commands': __dirname + '/commands'
 });
 
-const Config = require('./utils/config');
+// Load config utility
+require('./utils/config')
 
-const Discord = require('discord.js');
-const client = new Discord.Client();
-
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
-
-const fs = require('fs');
-
-fs.readdir('./events/', (err, files) => {
-  files.forEach((file) => {
-    let eventName = file.split('.')[0];
-    let eventFile = require(`./events/${file}`);
-
-    client.on(eventName, (object) => eventFile.run(object));
-  });
-});
-
-client.login(Config.getBotToken());
-
-module.exports = {
-  client
-}
+// Require the bot client utility class and login
+require('./utils/client').login()

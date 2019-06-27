@@ -1,67 +1,95 @@
-const path = require('path');
-const fs = require('fs');
+const DB = require('./db')
 
 class Config {
+
   constructor() {
-    this.configPath = path.join(__dirname, '..', 'config.json');
-    this.config = JSON.parse(fs.readFileSync(this.configPath));
+
+    this.config = {}
+    this.configRef = null
+    this.getConfig()
+
+  } 
+
+  initConfig() {
+    this.setCommandPrefix(process.env.CMD_PREFIX)
+    this.reload()
+    console.info("Set the other configuration options via bot commands in the Discord server. Bot will not function until they are set.")
+  }
+
+  async resetConfig() {
+    await DB.deleteData('config')
+    this.initConfig()
   }
 
   reload() {
-    this.config = JSON.parse(fs.readFileSync(this.configPath));
+    this.getConfig()
   }
 
-  saveConfig() {
-    let json = JSON.stringify(this.config, null, 2);
-    fs.writeFileSync(this.configPath);
-    this.reload();
-  }
-
-  // Getters
-
-  getConfig() {
-    return this.config;
+  async saveConfig() {
+    await DB.writeData('config', this.config)
   }
 
   getBotToken() {
-    return this.config.botToken;
+   return process.env.DISCORD_BOT_TOKEN
   }
 
-  getDatabaseInfo(part_name = null) {
-    if (part_name != null) {
-      return this.config.database[part_name];
+  getRef() {
+    return this.configRef
+  }
+
+  async getConfig() {
+    this.configRef = await DB.startListening('config')
+    let data = await this.configRef.once('value')
+
+    if (data.val() === null) {
+      console.log("Initial loading of data from Firebase")
+      this.initConfig()
     } else {
-      return this.config.database;
+      this.config = data.val()
+      this.saveConfig()
     }
+    
   }
 
   getCommandPrefix() {
-    return this.config.commandPrefix;
+    return this.config.cmdPrefix
+    // let data = await this.configRef.once('value')
+    // return data.val().cmdPrefix
   }
 
   getChannel(name) {
     return this.config.channels[name];
+    // let data = await this.configRef.once('value')
+    // return data.val().channels[name]
   }
 
-  getRole(role_type) {
-    return this.config.roles[role_type];
+  getRole(roleType) {
+    return this.config.roles[roleType];
+    // let data = await this.configRef.once('value')
+    // return data.val().roles[roleType]
   }
 
   // Setters
 
-  setCommandPrefix(prefix) {
-    this.config.commandPrefix = prefix;
-    this.saveConfig();
+  async setCommandPrefix(prefix) {
+    //this.config.commandPrefix = prefix;
+    //this.saveConfig();
+    await DB.writeData('config/cmdPrefix', prefix)
+    this.reload()
   }
 
-  setChannel(channel_type, id) {
-    this.config.channels[channel_type] = id;
-    this.saveConfig();
+  async setChannel(channel_type, id) {
+    // this.config.channels[channel_type] = id;
+    // this.saveConfig();
+    await DB.writeData(`config/channels/${channel_type}`, id)
+    this.reload()
   }
 
-  setRole(role_type, id) {
-    this.config.roles[role_type] = id;
-    this.saveConfig();
+  async setRole(role_type, id) {
+    // this.config.roles[role_type] = id;
+    // this.saveConfig();
+    await DB.writeData(`config/roles/${role_type}`, id)
+    this.reload()
   }
 }
 
