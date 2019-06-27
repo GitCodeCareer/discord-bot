@@ -44,7 +44,7 @@ class DB {
         await this.getDatabase().ref(path).set(obj)
     }
 
-    async pdateData(path, obj) {
+    async updateData(path, obj) {
         await this.getDatabase().ref(path).update(obj)
     }
 
