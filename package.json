@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "nodemon --exec jest --silent",
+    "watch": "nodemon index.js"
   },
   "dependencies": {
     "discord.js": "^11.5.1",
