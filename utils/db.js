@@ -1,7 +1,8 @@
 const firebase = require("firebase/app");
 require("firebase/database")
 
-class DB {
+/* env variables required here for testing purposes */
+require('dotenv').config();
 
     constructor() {
 
