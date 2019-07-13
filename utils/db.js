@@ -32,13 +32,36 @@ class DB {
         console.log(`Stopped listening for updates at /${path}`)
     }
 
-    logData(data) {
-        console.log(data.val())
-    }
+	/* firebase database runtime logs are saved in firebase.log file.
+	Log files can be found at ./logs */
+  logData(data) {
+    fs.appendFileSync(
+      path.join(__dirname, '../logs/firebase.log'),
+      JSON.stringify(data.val()) + '\n',
+      err => {
+        if (err) throw err;
+        console.log(`Firebase: logged message successfully.`.green);
+      }
+    );
+  }
 
-    errorData(data) {
-        console.error(data)
-    }
+	/* firebase database errors are saved in firebase.error.log file 
+	Log files can be found at ./logs */
+  errorData(data) {
+    fs.appendFileSync(
+      path.join(__dirname, '../logs/firebase.error.log'),
+      JSON.stringify(data.val()) + '\n',
+      err => {
+        if (err) throw err;
+        console.log(
+          `An error occured while listening to database.\nLog can be found at ${path.join(
+            __dirname,
+            '../logs/firebase.error.log'
+          )}`.red
+        );
+      }
+    );
+  }
 
     async writeData(path, obj) {
         await this.getDatabase().ref(path).set(obj)
