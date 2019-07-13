@@ -7,11 +7,6 @@ class BotClient {
 
     constructor() {
 
-        this.client = new Discord.Client()
-        this.client.on('ready', () => {
-            console.log(`Logged in as ${this.client.user.tag}!`);
-        });
-        
         fs.readdir(path.join(__dirname, '..', 'events'), (err, files) => {
           files.forEach((file) => {
             let eventName = file.split('.')[0];
