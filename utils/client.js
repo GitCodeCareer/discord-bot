@@ -26,15 +26,18 @@ class BotClient {
         return this.client
     }
 
-    login() {
+  login() {
+    this.client
+      .login(Config.getBotToken())
+      .then(
+        console.log(
+          [`Login Initiated: `.yellow, `Bot Token Accepted`.green.bold].join('')
+        )
+      )
+      .catch(console.error);
+  }
+}
 
-        try {
-            this.client.login(Config.getBotToken());
-        } catch(e) {
-            console.error(e)
-            return false
-        }
-        
         return true
     }
 }
