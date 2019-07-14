@@ -1,6 +1,8 @@
 // Load environment variables with dotenv
 require('dotenv').config();
 
+require('colors');
+
 const moduleAlias = require('module-alias');
 
 moduleAlias.addAliases({

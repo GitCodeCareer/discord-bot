@@ -13,3 +13,6 @@ config.json
 .env
 
 dist/
+
+# log files
+logs/*.log
