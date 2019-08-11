@@ -6,9 +6,7 @@
  * license: MIT https://opensource.org/licenses/MIT
  */
 
-const db = require("../utils/db");
-const config = require("../utils/config");
-const auth = require("../utils/auth");
+const { db, config, auth } = require("../utils");
 
 exports.run = async (message, args) => {
     // check if member is eligible to run this command.
