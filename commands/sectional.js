@@ -47,12 +47,12 @@ function usual(message, args) {
 async function init(message, args) {
     // list of all the sectionals needs to be added
     const sections = [
+        ["server-information", "https://i.imgur.com/ULdJ9EH.png"],
         ["community-rules", "https://i.imgur.com/VgmjM84.png"],
         ["role-hierarchy", "https://i.imgur.com/8xRbLSb.png"],
-        ["server-information", "https://i.imgur.com/ULdJ9EH.png"],
         ["open-source", "https://i.imgur.com/MrkZ96M.png"],
-        ["donate", "https://i.imgur.com/qyFYSY2.png"],
         ["server-invite", "https://i.imgur.com/lUXjLAu.png"]
+        ["donate", "https://i.imgur.com/qyFYSY2.png"],
     ];
 
     // check if sectionals already exist.
