@@ -17,3 +17,6 @@ require('./utils/config')
 
 // Require the bot client utility class and login
 require('./utils/client').login()
+
+// Require the api web server client utility class and start listening
+require('./utils/server').startListening()
