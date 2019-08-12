@@ -1,132 +1,87 @@
 /**
- * author: ap4gh(Github), debjay(on CodeCareer Discord Server)
- * license: MIT https://opensource.org/licenses/MIT
- */
-const maintainerID = '274434863711518722';
-/**
+ * 
  * command_name: define
- * version: 3.0.1
+ * version: 3.1.0
  * description: Provides definition for words from web.
  * npm_dependencies: { request, request-promise-native }
+ * author: ap4gh(Github), debjay(on CodeCareer Discord Server)
+ * license: MIT https://opensource.org/licenses/MIT
+ * 
+ * COMMENT GLOSSARY
+ * ----------------
+ *  1. TODO: To be done in future.
+ *  2. NOTE: Important statement about code.
+ *  3. PROC: Explains the following procedure.
+ * 
  */
 
 const request = require('request-promise-native');
 
 const maxRelatedTopics = 4;
 
-/*
-    ------------ HELPER FUNCTIONS ------------
-*/
+// run function for !define command:
+exports.run = (message, args) => {
+  if (args.length === 0)
+    return sendMessage(message, 'Use `!define --help` to get command guide.');
+  runUserCommand(message, args, args[0]); // args[0]: option name 
+};
 
-/**
- * @name notifyErrors
- * @description Notify maintainer and the end-user about the error.
- * @param {Object.Prototype} message discord message object
- * @param {Error} err error message
- */
-const notifyErrors = (message, err = '') => {
-  // maintainer can be changed by changing the maintainer ID
-  // from the top of the file.
-  const author = message.guild.member(maintainerID);
-  author.send(`Message ID: ${message.id}`);
-  author.send('```' + err + '```');
-  message.channel.send(
-    `Some internal error occured, maintainer ${author} has been notified.`
-  );
-};
-/**
- * @name sendMessage
- * @description checks for errors and sends message to the channel.
- * @param {Object.Prototype} message discord message object
- * @param {String} messageContent text, embed, image path etc.
- */
-const sendMessage = (message, messageContent) => {
-  try {
-    message.channel.send(messageContent);
-  } catch (e) {
-    console.error(e);
-    return notifyErrors(message, e);
-  }
-};
-/**
- * @name generateQueryURL
- * @description generate api query URL for service.
- * @param {String} serve The service to look for definition wiki, ddg etc.
- * @param {String} phrase search phrase entered by end-user.
- */
-const generateQueryURL = (phrase, service = 'ddg') => {
-  const queryURLs = {
-    wiki: `https://en.wikipedia.org/w/api.php?action=opensearch&list=search&search=${phrase}&format=json&formatversion=2`,
-    ddg: `https://api.duckduckgo.com/?q=${phrase}&format=json`
-  };
-  return encodeURI(queryURLs[service]);
-};
-/**
- * @name runCommand
- * @description screen command and return the function running that command.
- * @param {Object.Prototype} message discord message object
- * @param {Array.Prototype} args arguments passed with the command
- * @param {String} commandName name of command
- */
-const runUserCommand = (message, args, commandName = '') => {
+/** runUserCommand: screen command and execute handler. */
+const runUserCommand = (message, args, option = '') => {
   const availableCommands = {
     '-h': showHelp,
     '--help': showHelp,
     wiki: wikipediaOpenSearch,
     default: ddgInstantAnswer
   };
-  // if commandName does not match any, return default
-  return (availableCommands[commandName] || availableCommands.default)(
-    message,
-    args
-  );
+  // PROC: if option does not match any, return default
+  return (availableCommands[option] || availableCommands.default)(message, args);
 };
 
-/*
-    ------------ COMMAND FUNCTIONS ------------
-*/
 
-/**
- *      •• DUCKDUCKGO INSTANT ANSWER ••
- */
-const ddgInstantAnswer = async (message, args) => {
-  // join args to create a search phrase
-  const searchPhrase = args.slice(0, args.length).join(' ');
-  let data;
+/** --------------
+ * OPTION HANDLERS
+ * ---------------*/
+
+/** ddgInstantAnswer: get answers from DuckDuckGo */
+async function ddgInstantAnswer (message, args) {
+
+  const searchPhrase = args.slice(0, args.length).join(' '); // search phrase
+  let data; // to collect fetched data.
+
   try {
     data = await request({
       url: generateQueryURL(searchPhrase),
       json: true,
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
-  } catch (e) {
-    console.error(e);
-    // if request fails report errors
+  } catch (err) {
+    console.error(err);
     return notifyErrors(message, e);
   }
+
   let result = `:mag: \`${searchPhrase}\`\n`;
   const relatedTopics = data['RelatedTopics'];
   const abstractText = data['AbstractText'];
   const abstractURL = data['AbstractURL'];
-  // if no data is provided:
-  if (relatedTopics.length === 0) {
+
+  // PROC: if nothing was found:
+  if (relatedTopics.length === 0) 
     result += `Cannot find information on *${searchPhrase}* :no_good: Read the command guide with \`!define --help\` to get accurate results.`;
-  } // if abstract data is missing:
   else if (!abstractText || !abstractURL) {
     result += `*"${searchPhrase}" may refer to following things*  :point_down:\n\n`;
     for (let topic of relatedTopics) {
-      // keeping maximum of 3 related topics to be displayed.
-      // maximum related topics can be changed at the top.
-      // NOTE: discord do not allow a message length > 2000
-      // characters.
+      /**
+       * NOTE: keeping maximum of 3 related topics to be displayed.
+       * maximum related topics can be changed at the top.
+       * discord do not allow a message length > 2000 chars.
+       */
       if (
         topic['Text'] === undefined ||
         topic['FirstURL'] === undefined ||
         relatedTopics.indexOf(topic) >= maxRelatedTopics
-      )
-        break;
+      ) break;
+
       result += `${topic['Text']}\n${topic['FirstURL']}\n\n`;
     }
   } // if abstract data exist:
@@ -136,13 +91,12 @@ const ddgInstantAnswer = async (message, args) => {
   return sendMessage(message, result);
 };
 
-/**
- *      •• WIKIPEDIA OPEN SEARCH ••
- */
-const wikipediaOpenSearch = async (message, args) => {
-  // join args after 'wiki' to create a search phrase
-  const searchPhrase = args.slice(1, args.length).join(' ');
+/** wikipediaOpenSearch: get answers from Wikipedia */
+async function wikipediaOpenSearch (message, args) {
+
+  const searchPhrase = args.slice(1, args.length).join(' '); // search phrase
   let data;
+
   try {
     data = await request({
       url: generateQueryURL(searchPhrase, 'wiki'),
@@ -155,45 +109,44 @@ const wikipediaOpenSearch = async (message, args) => {
     console.error(e);
     return notifyErrors(message, e);
   }
-  // all definitions:
-  const definitions = data[2];
-  // all wikipedia page links:
-  const links = data[3];
-  // main definition page link:
-  let wikipediaPageLink = ':link: ' + links[0];
-  let result = definitions[0];
-  // no information is received from wikipedia:
-  if (!result) {
+  
+  const definitions = data[2]; // all definitions
+  const links = data[3]; // all wikipedia page links
+  let wikipediaPageLink = ':link: ' + links[0]; // main definition page link
+
+  let result = definitions[0]; //  first definition
+  if (!result) // PROC: if no definition was found
     result = `No information provided for *${searchPhrase}* :no_good: `;
-  } // a word have more than one meaning:
+  // More answers? collect them.
   else if (result.match(/may refer to/g)) {
-    result =
-      `:mag: **Wikipedia**: \`${searchPhrase}\`\n\n` +
+    result = `:mag: **Wikipedia**: \`${searchPhrase}\`\n\n` +
       '```\n' +
       result +
       '\n\n';
-    // remove useless definition at index 0:
-    definitions.shift();
-    // collect related definition:
+
+    definitions.shift(); // PROC: remove useless definition at index 0
     let nonEmptyDefinitions = [];
-    for (let d of definitions) if (d.length > 0) nonEmptyDefinitions.push(d);
+
+    for (let d of definitions) 
+      if (d.length > 0) 
+        nonEmptyDefinitions.push(d);
+
     for (let i = 0; i < maxRelatedTopics; ++i) {
-      if (nonEmptyDefinitions[i] == undefined) break;
-      result += `${i + 1}. ${nonEmptyDefinitions[i]}\n\n`;
+      if (nonEmptyDefinitions[i] == undefined) 
+        break;
+      result += `${i + 1}. ${nonEmptyDefinitions[i]}\n\n`; // PROC: store all non-empty defn.
     }
     result += '```';
-  } // exact meaning is obtained:
-  else {
-    result =
-      `:mag: ${searchPhrase}` + '```' + result + '```' + wikipediaPageLink;
+  }
+  else { // PROC: if exact meaning was obtained, send it.
+    result = `:mag: ${searchPhrase}` + '```' + result + '```' + wikipediaPageLink;
   }
   return sendMessage(message, result);
 };
 
-/**
- *      •• HELP COMMAND ••
- */
-const showHelp = (message, args) => {
+/** showHelp: command manual. */
+function showHelp (message, args) {
+// TODO: Move into manuals folder
   sendMessage(
     message,
     `
@@ -234,9 +187,34 @@ GUIDE
   );
 };
 
-// run function for !define command:
-exports.run = (message, args) => {
-  if (args.length === 0)
-    return sendMessage(message, 'Use `!define --help` to get command guide.');
-  runUserCommand(message, args, args[0]);
+/** ---------------
+ * HELPER FUNCTIONS
+ * ----------------*/
+
+/** notifyErrors: Notify maintainer and the end-user about the error. */
+async function notifyErrors(message, err = '') {
+  const maintainerID = '274434863711518722';
+  // NOTE: maintainer ID can be changed above
+  const author = message.guild.member(maintainerID);
+  author.send(`Message ID: ${message.id}\n` + '```' + err + '```');
+  await message.channel.send(`Some internal error occured, maintainer ${author} has been notified.`);
 };
+
+/** sendMessage: checks for errors then send message to the channel. */
+async function sendMessage(message, messageContent) {
+  try {
+    await message.channel.send(messageContent);
+  } catch (err) {
+    return notifyErrors(message, err);
+  }
+};
+
+/** generateQueryURL: generate api query URL for service. */
+function generateQueryURL(phrase, service = 'ddg') {
+  const queryURLs = {
+    wiki: `https://en.wikipedia.org/w/api.php?action=opensearch&list=search&search=${phrase}&format=json&formatversion=2`,
+    ddg: `https://api.duckduckgo.com/?q=${phrase}&format=json`
+  };
+  return encodeURI(queryURLs[service]);
+};
+
