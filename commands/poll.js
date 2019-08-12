@@ -1,24 +1,21 @@
-const Auth = require('../utils/auth');
+const { auth } = require('../utils');
 
-exports.run = (message, args) => {
+exports.run = async (message, args) => {
    
-   if (Auth.isAdmin(message.member)) {
-      if(!args || args.length < 1) return message.reply("Must provide the text of the poll question after the command.");
+   if (auth.isAdmin(message.member)) {
+
+      if(!args || args.length < 1) 
+         return message.reply("Please provide description of poll after command name.");
 
       const question = args.join(' ')
-  
-      let text = "**POLL:** " + question
 
-      message.channel.send(text)
-         .then(function (msg) {
-            msg.react("✅")
-            msg.react("❌")
-         }).catch(function() {
-            //Something
-         });
-      message.delete();
+      const msg = await message.channel.send(`Hey everyone, ${message.author} have started a poll.\n\`\`\`${question}\`\`\``);
+      await msg.react("✅");
+      await msg.react("❌");
+      await message.delete();
+
    } else {
-      message.reply('You must be an admin in order to run this command.');
+      await message.reply('You must be an admin in order to run this command.');
    }
     
 };
