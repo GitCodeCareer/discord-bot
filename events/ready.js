@@ -1,5 +1,4 @@
-const { client } = require("../utils");
-const bot = client.client;
+const bot = require('../utils/client').getClient()
 
 exports.run = async function () {
   console.log(`Logged in as ${bot.user.tag.black.bgYellow}`);

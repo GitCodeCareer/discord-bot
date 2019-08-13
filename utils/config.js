@@ -33,6 +33,10 @@ class Config {
    return process.env.DISCORD_BOT_TOKEN
   }
 
+  getServerPort() {
+    return process.env.WEB_SERVER_PORT || 3000
+  }
+
   getRef() {
     return this.configRef
   }
