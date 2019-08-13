@@ -30,7 +30,7 @@ class ApiServer {
     startListening() {
         this.getServer().listen(Config.getServerPort(), function() {
             console.log(
-                [`API web server started and listening on port `.yellow, Config.getServerPort().magenta.bold].join('')
+                [`API web server started and listening on port `.yellow, `${Config.getServerPort()}`.magenta.bold].join('')
             )
         })
     }
