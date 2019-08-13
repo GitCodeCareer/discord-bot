@@ -16,3 +16,7 @@ dist/
 
 # log files
 logs/*.log
+
+# lock files
+package-lock.json
+yarn.lock

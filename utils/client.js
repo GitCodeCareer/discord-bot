@@ -24,12 +24,19 @@ class BotClient {
   login() {
     this.client
       .login(Config.getBotToken())
-      .then(
-        console.log(
-          [`Login Initiated: `.yellow, `Bot Token Accepted`.green.bold].join('')
-        )
-      )
-      .catch(console.error);
+        .then(function(token) {
+          console.log([
+            `Login Successful`.green, 
+            `: Bot is now connected.`
+          ].join(''))
+        })
+        .catch(function(err) {
+          console.log([
+            "Login failed".red,
+            "\n❌ : There were some problems during logging to discord.\n",
+            `${err}`.red
+          ].join(''));
+        });
   }
 }
 

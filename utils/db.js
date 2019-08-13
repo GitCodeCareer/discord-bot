@@ -25,13 +25,13 @@ class DB {
   startListening(path, eventType = 'value') {
     let ref = this.database.ref(path);
     ref.on(eventType, this.logData, this.errorData);
-    console.log(`Now listening for updates at /${path}`);
+    console.log(`Firebase: Now listening for updates at /${path}`.magenta);
     return ref;
   }
 
   stopListening(path = null, eventType = null) {
     this.database.ref(path).off(eventType);
-    console.log(`Stopped listening for updates at /${path}`);
+    console.log(`Firebase: Stopped listening for updates at /${path}`.magenta);
   }
 
 	/* firebase database runtime logs are saved in firebase.log file.
