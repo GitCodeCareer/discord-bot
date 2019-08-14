@@ -1,8 +1,10 @@
 const client = require('../utils/client').getClient()
 
+const routePrefix = '/codecareer'
+
 module.exports = [
     {
-        path: '/member-count',
+        path: `${routePrefix}/member-count`,
         method: () => {
             return {
                 memberCount: client.guilds.first().memberCount
