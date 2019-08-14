@@ -9,14 +9,31 @@ class ApiServer {
             res.writeHead(200, {'Content-Type': 'application/json'})
 
             let routes = this.getRoutes();
+            let routePrefix = Config.getApiRoutePrefix()
+
             routes.map(route => {
-                console.log(req.url, route.path)
-                if (req.url === route.path) {
-                    res.write(JSON.stringify(route.method()))
-                    res.end()
+                let routePath = route.path.startsWith('/') 
+                    ? route.path.slice(1)
+                    : route.path;
+                let fullPath = `/${routePrefix}/${routePath}`;
+                console.log(req.url, fullPath)
+                if (req.url === fullPath) {
+                    let contentHeader = routePath === ''
+                        ? {'Content-Type': 'text/html'}
+                        : {'Content-Type': 'application/json'};
+                    this.handleResponse(res, route.method, contentHeader)
                 }
             })
         })
+    }
+
+    handleResponse(res, callback, headers) {
+        res.writeHead(200, headers)
+        let body = headers['Content-Type'] === 'application/json'
+            ? JSON.stringify(callback())
+            : callback().toString() // if the response is a View instance
+        res.write(body)
+        res.end()
     }
 
     getServer() {

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const DB = require('./db')
 
 class Config {
@@ -35,6 +36,13 @@ class Config {
 
   getServerPort() {
     return process.env.WEB_SERVER_PORT || 3000
+  }
+
+  getApiRoutePrefix() {
+    let routePrefix = process.env.API_ROUTE_PREFIX.startsWith('/') 
+      ? process.env.API_ROUTE_PREFIX.slice(1)
+      : process.env.API_ROUTE_PREFIX;
+    return routePrefix || 'codecareer'
   }
 
   getRef() {
