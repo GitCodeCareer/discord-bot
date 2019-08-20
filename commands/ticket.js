@@ -3,7 +3,7 @@ const Config = require('../utils/config');
 
 exports.run = (message, args) => {
 
-   if(!args || args.length < 1) return message.reply(`, you must type your question after the command. You may also use "!helpme PRIVATE" if you would like your question to remain confidential.`);
+   if(!args || args.length < 1) return message.reply(`, you must type your question after the command. You may also use "!ticket PRIVATE" if you would like your question to remain confidential.`);
 
    const request = args.join(' ');
 
