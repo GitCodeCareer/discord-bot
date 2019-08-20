@@ -16,22 +16,19 @@ class ApiServer {
                     ? route.path.slice(1)
                     : route.path;
                 let fullPath = `/${routePrefix}/${routePath}`;
-                console.log(req.url, fullPath)
-                if (req.url === fullPath) {
-                    let contentHeader = routePath === ''
-                        ? {'Content-Type': 'text/html'}
-                        : {'Content-Type': 'application/json'};
-                    this.handleResponse(res, route.method, contentHeader)
-                }
+                if (req.url === fullPath) { this.handleResponse(res, route) }
             })
         })
     }
 
-    handleResponse(res, callback, headers) {
-        res.writeHead(200, headers)
-        let body = headers['Content-Type'] === 'application/json'
-            ? JSON.stringify(callback())
-            : callback().toString() // if the response is a View instance
+    handleResponse(res, route) {
+        let contentHeader = route.middleware.includes('web')
+                        ? {'Content-Type': 'text/html'}
+                        : {'Content-Type': 'application/json'};
+        res.writeHead(200, contentHeader)
+        let body = route.middleware.includes('web')
+            ? route.method().toString()
+            : JSON.stringify(route.method())
         res.write(body)
         res.end()
     }
