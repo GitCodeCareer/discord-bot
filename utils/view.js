@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 const handlebars = require('handlebars')
-const { Response } = require('http')
 
 class View {
     constructor(name, variables, email) {
