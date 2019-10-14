@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 exports.run = async (message) => {
 const { quote, author } = await fetch('http://quotes.stormconsultancy.co.uk/random.json').then(response => response.json())
 const { contents } = await fetch('https://quotes.rest/qod.json').then(response => response.json())
-const { data } = await fetch('https://api.giphy.com/v1/gifs/random?api_key=20SloZAgXiC07Zqu9pBwIllwoVJ9v1xn').then(response => response.json())
-const { url } = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY').then(response => response.json())
+const { data } = await fetch(process.env.GIPHY_API_KEY).then(response => response.json())
+const { url } = await fetch(process.env.NASA_API_KEY).then(response => response.json())
 
 // inside a command, event listener, etc.
 const quoteEmbed = new Discord.RichEmbed()
