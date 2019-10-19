@@ -2,7 +2,7 @@
  * command_name: sectional
  * version: 1.1.0
  * description: set/delete/update section content in information channel.
- * author: ap4gh(Github), debjay(on CodeCareer Discord Server)
+ * Author: ap4gh(Github), debjay(on CodeCareer Discord Server)
  * license: MIT https://opensource.org/licenses/MIT
  * 
  * COMMENT GLOSSARY
@@ -12,12 +12,12 @@
  * 3. PROC: Explains the following procedure.
  */
 
-const { db, config, auth } = require("../utils");
+const { Auth, Config, DB } = require('@crock/discord-bot-utils');
 
 exports.run = async (message, args) => {
 	// PROC: check if member is eligible to run this command.
 	let member = message.guild.members.find(m => m.id === message.author.id);
-	if (!auth.isAdmin(member))
+	if (!Auth.isAdmin(member))
 		return message.channel.send("`[ℹ]: You must be an admin in order to run this command.`");
 
 	runCommand(args[0], message, args); // args[0]: option name
@@ -70,14 +70,14 @@ async function init(message, args) {
 	// PROC: get newly saved data in JSON from database.
 	const savedDataJSON = (await getAllData()).toJSON();
 	// PROC: default channel to send messages.
-	const infoChannel = message.guild.channels.find(ch => ch.id == config.getChannel("information"))
+	const infoChannel = message.guild.channels.find(ch => ch.id == Config.getChannel("information"))
 	// PROC: Send messages in Information channel
 	for (sectionName of Object.keys(savedDataJSON)) {
 		if (!savedDataJSON[sectionName]["content_message_id"]) {
 			const headerMsg = await infoChannel.send({ files: [savedDataJSON[sectionName]["img_header_url"]] });
 			const contentMsg = await headerMsg.channel.send(`${sectionName} <content>`);
 			// save sent messages ID for future edits
-			await db.updateData(`/config/sectionals/${sectionName}`, {
+			await DB.updateData(`/config/sectionals/${sectionName}`, {
 				"content_message_id": contentMsg.id,
 				"header_message_id": headerMsg.id
 			});
@@ -100,7 +100,7 @@ async function updateContent(message, args) {
 	if (!sectionObject)
 		return message.channel.send(`\`[❌]: Cannot find section "${args[1]}" in database.\``);
 
-	const info_channel = message.guild.channels.find(ch => ch.id === config.getChannel("information"));
+	const info_channel = message.guild.channels.find(ch => ch.id === Config.getChannel("information"));
 	const discord_message = await info_channel.fetchMessage(sectionObject["content_message_id"]);
 	// PROC: edit message with new content
 	await discord_message.edit(newContent);
@@ -118,7 +118,7 @@ async function updateHeader(message, args) {
 		return message.channel.send(`\`[❌]: Cannot understand section name "${args[1]}"\``);
 	// PROC: get previously sent discord message for edit.
 	const discord_message = await info_channel.fetchMessage(sectionObject["header_message_id"]);
-	const info_channel = message.guild.channels.find(ch => ch.id === config.getChannel("information"));
+	const info_channel = message.guild.channels.find(ch => ch.id === Config.getChannel("information"));
 	// PROC: edit message with new Header URL
 	await discord_message.edit({ files: [headerURL] });
 	// PROC: update message content in firebase db, args[1]: section name
@@ -134,12 +134,12 @@ async function deleteSection(message, args) {
 		return message.channel.send(`\`[ℹ️]: Cannot delete "${sectionName}" -- It does not exist.\``);
 	// PROC: retrive existing section data and delete messages from discord channel and database
 	const sectionData = (await getAllData()).toJSON()[sectionName];
-	const info_channel = message.guild.channels.find(ch => ch.id === config.getChannel("information"));
+	const info_channel = message.guild.channels.find(ch => ch.id === Config.getChannel("information"));
 	const discord_message_content = await info_channel.fetchMessage(sectionData["content_message_id"]);
 	const discord_message_header = await info_channel.fetchMessage(sectionData["header_message_id"]);
 	await discord_message_content.delete();
 	await discord_message_header.delete();
-	await db.deleteData(`config/sectionals/${sectionName}`);
+	await DB.deleteData(`config/sectionals/${sectionName}`);
 
 }
 
@@ -152,7 +152,7 @@ async function reloadSections(message, args) {
 	 * database.
 	 */
 	const sectionObject = (await getAllData()).toJSON();
-	const infoChannel = message.guild.channels.find(ch => ch.id === config.getChannel("information"));
+	const infoChannel = message.guild.channels.find(ch => ch.id === Config.getChannel("information"));
 
 	for (section of Object.keys(sectionObject)) {
 		// PROC: delete existing messages
@@ -164,7 +164,7 @@ async function reloadSections(message, args) {
 		const msg = await infoChannel.send({ files: [sectionObject[section]["img_header_url"]] })
 		const msg2 = await msg.channel.send(sectionObject[section]["message_content"] || "<content>");
 		// PROC: update database with new message IDs.
-		await db.updateData(`/config/sectionals/${section}`, {
+		await DB.updateData(`/config/sectionals/${section}`, {
 			"content_message_id": msg2.id,
 			"header_message_id": msg.id
 		})
@@ -234,12 +234,12 @@ async function addSectionFieldsDB(sections) {
 		}
 	}
 
-	await db.updateData(`/config/sectionals`, updateObj);
+	await DB.updateData(`/config/sectionals`, updateObj);
 }
 
 /* getAllData: return sectional collection object. */
 async function getAllData() {
-	const ref = await db.getDatabase().ref('/config/sectionals');
+	const ref = await DB.getDatabase().ref('/config/sectionals');
 	const data = await ref.once("value");
 	if (data.val() === null)
 		return null;
@@ -248,16 +248,16 @@ async function getAllData() {
 
 /** updateSection: update a section with new data(obj). */
 async function updateSection(sectionName, obj) {
-	const ref = await db.getDatabase().ref(`/config/sectionals/${sectionName}`);
+	const ref = await DB.getDatabase().ref(`/config/sectionals/${sectionName}`);
 	const responseData = await ref.once("value");
 	if (responseData.val() === null)
 		return console.log("`ERROR: No such section exists ... `");
-	await db.updateData(`/config/sectionals/${sectionName}`, obj);
+	await DB.updateData(`/config/sectionals/${sectionName}`, obj);
 }
 
 /** collectionExist: check if requested collection exist in database. */
 async function collectionExist(path) {
-	const ref = await db.getDatabase().ref(path);
+	const ref = await DB.getDatabase().ref(path);
 	const snapshot = await ref.once("value");
 	return snapshot.exists();
 }

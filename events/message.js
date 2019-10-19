@@ -1,4 +1,4 @@
-const Config = require('../utils/config');
+const { Config } = require('@crock/discord-bot-utils');
 const path = require('path')
 
 exports.run = (msg) => {

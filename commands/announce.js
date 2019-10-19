@@ -1,4 +1,4 @@
-const Auth = require('../utils/auth')
+const { Auth } = require('@crock/discord-bot-utils');
 
 exports.run = async (message, args) => {
    

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const Config = require('../utils/config');
+const { Config } = require('@crock/discord-bot-utils');
 
 exports.run = (message, args) => {
 

@@ -1,12 +1,12 @@
-const client = require('../utils/client').getClient()
-const { view } = require('../utils')
+const { Client } = require('@crock/discord-bot-utils')
+const { View } = require('@crock/discord-bot-utils')
 
 module.exports = [
     {
         path: `/`,
         middleware: ['web'],
         method: () => {
-            return view('index', { test: "hello world" });
+            return View('index', { test: "hello world" });
         }
     },
     {
@@ -14,7 +14,7 @@ module.exports = [
         middleware: ['api'],
         method: () => {
             return {
-                memberCount: client.guilds.first().memberCount
+                memberCount: Client.getClient().guilds.first().memberCount
             }
         }
     }
