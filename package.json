@@ -6,8 +6,8 @@
   },
   "dependencies": {
     "@crock/discord-bot-utils": "^1.0.3",
-    "colors": "^1.4.0",
     "module-alias": "^2.2.2",
+    "node-fetch": "2.6.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   },
