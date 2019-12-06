@@ -20,7 +20,7 @@ const quoteEmbed = new Discord.RichEmbed()
     .addField(contents.quotes[0].quote, contents.quotes[0].tags, true)
     .addField('📹 YouTube :', 'https://www.youtube.com/user/bnspak/', true)
     .addField('🔮 Random GIF :', data.title, true)
-    .setImage(data.image_url)
+    .setImage(data.images[0].original[0].webp)
     .setFooter('CodeCareer is committed to helping new developers make their first PR!', 'https://avatars3.githubusercontent.com/u/42856887?s=200&v=4')
     .setTimestamp()
 
