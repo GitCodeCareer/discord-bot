@@ -32,6 +32,7 @@ const runUserCommand = (message, args, option = '') => {
     '-h': showHelp,
     '--help': showHelp,
     wiki: wikipediaOpenSearch,
+    term: wikitionaryOpenSearch,
     default: ddgInstantAnswer
   };
   // PROC: if option does not match any, return default
@@ -44,7 +45,7 @@ const runUserCommand = (message, args, option = '') => {
  * ---------------*/
 
 /** ddgInstantAnswer: get answers from DuckDuckGo */
-async function ddgInstantAnswer (message, args) {
+async function ddgInstantAnswer(message, args) {
 
   const searchPhrase = args.slice(0, args.length).join(' '); // search phrase
   let data; // to collect fetched data.
@@ -66,7 +67,7 @@ async function ddgInstantAnswer (message, args) {
   const abstractURL = data['AbstractURL'];
 
   // PROC: if nothing was found:
-  if (relatedTopics.length === 0) 
+  if (relatedTopics.length === 0)
     result += `Cannot find information on *${searchPhrase}* :no_good: Read the command guide with \`!define --help\` to get accurate results.`;
   else if (!abstractText || !abstractURL) {
     result += `*"${searchPhrase}" may refer to following things*  :point_down:\n\n`;
@@ -92,7 +93,7 @@ async function ddgInstantAnswer (message, args) {
 };
 
 /** wikipediaOpenSearch: get answers from Wikipedia */
-async function wikipediaOpenSearch (message, args) {
+async function wikipediaOpenSearch(message, args) {
 
   const searchPhrase = args.slice(1, args.length).join(' '); // search phrase
   let data;
@@ -109,7 +110,7 @@ async function wikipediaOpenSearch (message, args) {
     console.error(e);
     return notifyErrors(message, e);
   }
-  
+
   const definitions = data[2]; // all definitions
   const links = data[3]; // all wikipedia page links
   let wikipediaPageLink = ':link: ' + links[0]; // main definition page link
@@ -127,12 +128,12 @@ async function wikipediaOpenSearch (message, args) {
     definitions.shift(); // PROC: remove useless definition at index 0
     let nonEmptyDefinitions = [];
 
-    for (let d of definitions) 
-      if (d.length > 0) 
+    for (let d of definitions)
+      if (d.length > 0)
         nonEmptyDefinitions.push(d);
 
     for (let i = 0; i < maxRelatedTopics; ++i) {
-      if (nonEmptyDefinitions[i] == undefined) 
+      if (nonEmptyDefinitions[i] == undefined)
         break;
       result += `${i + 1}. ${nonEmptyDefinitions[i]}\n\n`; // PROC: store all non-empty defn.
     }
@@ -144,9 +145,48 @@ async function wikipediaOpenSearch (message, args) {
   return sendMessage(message, result);
 };
 
+/** wikitionaryOpenSearch: get meanings from Wikitionary */
+async function wikitionaryOpenSearch(message, args) {
+
+  const searchPhrase = args.slice(1, args.length).join(' '); // search phrase
+  let data;
+
+  try {
+    data = await request({
+      url: generateQueryURL(searchPhrase, 'term'),
+      json: true,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    return notifyErrors(message, e);
+  }
+
+  if (data[1].length === 0) {
+    return message.channel.send(`No terms matched *${searchPhrase}*`);
+  }
+
+  let res;
+  for (i = 0; i < data[1].length; i++) {
+    res += `${data[1][i]} : ${data[3][i]}\n`;
+  }
+
+  const resultMsg = {
+    "title": "Results from Wikitionary",
+    "color": 0Xf1c902,
+    "timestamp": Date.now(),
+    "description": res,
+  }
+
+  return message.channel.send({ embed: resultMsg });
+
+}
+
 /** showHelp: command manual. */
-function showHelp (message, args) {
-// TODO: Move into manuals folder
+function showHelp(message, args) {
+  // TODO: Move into manuals folder
   sendMessage(
     message,
     `
@@ -213,7 +253,8 @@ async function sendMessage(message, messageContent) {
 function generateQueryURL(phrase, service = 'ddg') {
   const queryURLs = {
     wiki: `https://en.wikipedia.org/w/api.php?action=opensearch&list=search&search=${phrase}&format=json&formatversion=2`,
-    ddg: `https://api.duckduckgo.com/?q=${phrase}&format=json`
+    ddg: `https://api.duckduckgo.com/?q=${phrase}&format=json`,
+    term: `https://en.wiktionary.org/w/api.php?action=opensearch&search=${phrase}`
   };
   return encodeURI(queryURLs[service]);
 };
