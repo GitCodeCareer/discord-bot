@@ -20,7 +20,7 @@ exports.run = async message => {
     .setColor("#5DBCD2")
     .setAuthor(author, "https://robohash.org/CodeCareer.io.png")
     .setThumbnail(url)
-    .setTitle("💡 Motivational Quote 🎅🎄🎯🚀")
+    .setTitle("💡 Motivational Quote 🎯🚀")
     .setURL("https://codecareer.io/")
     .setDescription(quote)
     .addField("🎧 Podcast :", "https://anchor.fm/codecareer", true)
