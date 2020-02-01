@@ -14,7 +14,7 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
-    "firebase": "^7.7.0",
+    "firebase": "^7.8.0",
     "handlebars": "^4.7.2",
     "module-alias": "^2.2.2",
     "node-fetch": "2.6.0",

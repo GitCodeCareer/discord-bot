@@ -37,21 +37,12 @@ exports.run = async message => {
       .setTimestamp();
 
     message.channel.send(quoteEmbed);
+  } catch (err) {
     // handle promise rejections.
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
-  } catch (err) {
     console.error(err);
-    return notifyErrors(message, e);
+    message.channel.send(
+      "🤖 Oops an error occured. You can still try another commands or read the Docs 🐛"
+    );
   }
 };
-
-/** notifyErrors: Notify maintainer and the end-user about the error. */
-async function notifyErrors(message, err = "") {
-  const maintainerID = "211509232137273344";
-  // NOTE: maintainer ID can be changed above
-  const author = message.guild.member(maintainerID);
-  author.send(`Message ID: ${message.id}\n` + "```" + err + "```");
-  await message.channel.send(
-    `Some internal error occured, maintainer ${author} has been notified.`
-  );
-}
