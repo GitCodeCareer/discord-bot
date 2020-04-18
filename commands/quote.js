@@ -1,48 +1,132 @@
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
+const Discord = require('discord.js');
+const axios = require('axios');
 
 exports.run = async message => {
   try {
-    const { quote, author } = await fetch(
-      "http://quotes.stormconsultancy.co.uk/random.json"
-    ).then(response => response.json());
-    const { contents } = await fetch(
-      "https://quotes.rest/qod.json"
-    ).then(response => response.json());
-    const { data } = await fetch(
-      `https://api.giphy.com/v1/gifs/random?tag=motivational&rating=g&api_key=${process.env.GIPHY_API_KEY}`
-    ).then(response => response.json());
-    const { hdurl } = await fetch(
-      `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}&hd=true`
-    ).then(response => response.json());
-
-    // inside a command, event listener, etc.
-    const quoteEmbed = new Discord.RichEmbed()
-      .setColor("#5DBCD2")
-      .setAuthor(author, "https://robohash.org/CodeCareer.io.png")
-      .setThumbnail(hdurl)
-      .setTitle("💡 Motivational Quote 🔥🎯🚀")
-      .setURL("https://codecareer.io/")
-      .setDescription(quote)
-      .addField("🎧 Podcast :", "https://anchor.fm/codecareer", true)
-      .addField("🌠 Quote Of The Day :", contents.quotes[0].quote, true)
-      .addField(contents.quotes[0].author, contents.quotes[0].tags, true)
-      .addField("📹 YouTube :", "https://www.youtube.com/user/bnspak/", true)
-      .addField("🔮 Random GIF :", data.title, true)
-      .setImage(data.image_url)
-      .setFooter(
-        "CodeCareer is committed to helping new developers make their first PR!",
-        "https://avatars3.githubusercontent.com/u/42856887?s=200&v=4"
-      )
-      .setTimestamp();
-
-    message.channel.send(quoteEmbed);
-  } catch (err) {
-    // handle promise rejections.
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch
-    console.error(err);
-    message.channel.send(
-      "🤖 Oops an error occured. You can still try another commands or read the Docs 🐛"
-    );
+    axios.all([
+      axios.get('http://quotes.stormconsultancy.co.uk/random.json').catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          message.channel.send(
+            "🤖 The request was made and the server responded with a status code that falls out of the range of 2xx 🐛"
+          );
+        } else if (error.request) {
+          console.log(error.request);
+          message.channel.send(
+            "🤖 The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js 🐛"
+          );
+        } else {
+          console.log('Error', error.message);
+          message.channel.send(
+            "🤖 Something happened in setting up the request that triggered an Error 🐛"
+          );
+        }
+        console.log(error.config);
+      }),
+      axios.get('https://quotes.rest/qod.json').catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          message.channel.send(
+            "🤖 The request was made and the server responded with a status code that falls out of the range of 2xx 🐛"
+          );
+        } else if (error.request) {
+          console.log(error.request);
+          message.channel.send(
+            "🤖 The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js 🐛"
+          );
+        } else {
+          console.log('Error', error.message);
+          message.channel.send(
+            "🤖 Something happened in setting up the request that triggered an Error 🐛"
+          );
+        }
+        console.log(error.config);
+      }),
+      axios.get(`https://api.giphy.com/v1/gifs/random?tag=motivational&rating=g&api_key=${process.env.GIPHY_API_KEY}`).catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          message.channel.send(
+            "🤖 The request was made and the server responded with a status code that falls out of the range of 2xx 🐛"
+          );
+        } else if (error.request) {
+          console.log(error.request);
+          message.channel.send(
+            "🤖 The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js 🐛"
+          );
+        } else {
+          console.log('Error', error.message);
+          message.channel.send(
+            "🤖 Something happened in setting up the request that triggered an Error 🐛"
+          );
+        }
+        console.log(error.config);
+      }),
+      axios.get(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}&hd=true`).catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          message.channel.send(
+            "🤖 The request was made and the server responded with a status code that falls out of the range of 2xx 🐛"
+          );
+        } else if (error.request) {
+          console.log(error.request);
+          message.channel.send(
+            "🤖 The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js 🐛"
+          );
+        } else {
+          console.log('Error', error.message);
+          message.channel.send(
+            "🤖 Something happened in setting up the request that triggered an Error 🐛"
+          );
+        }
+        console.log(error.config);
+      })
+    ])
+      .then(axios.spread((randomquote, quoteoftheday, giphy, nasa) => {
+        const quoteEmbed = new Discord.RichEmbed()
+          .setColor("#5DBCD2")
+          .setAuthor(randomquote.data.author, "https://robohash.org/CodeCareer.io.png")
+          .setThumbnail(nasa.data.hdurl)
+          .setTitle("💡 Motivational Quote 🌈🎯🚀")
+          .setURL("https://codecareer.io/")
+          .setDescription(randomquote.data.quote)
+          .addField("🌠 Quote Of The Day :", quoteoftheday.data.contents.quotes[0].quote, true)
+          .addField(quoteoftheday.data.contents.quotes[0].author, quoteoftheday.data.contents.quotes[0].tags, true)
+          .addField("🔮 Random GIF :", giphy.data.data.title, true)
+          .setImage(giphy.data.data.image_url)
+          .setFooter(
+            "CodeCareer is committed to helping new developers make their first PR!",
+            "https://avatars3.githubusercontent.com/u/42856887?s=200&v=4"
+          )
+          .setTimestamp();
+        message.channel.send(quoteEmbed);
+      }));
+  } catch (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+      message.channel.send(
+        "🤖 The request was made and the server responded with a status code that falls out of the range of 2xx 🐛"
+      );
+    } else if (error.request) {
+      console.log(error.request);
+      message.channel.send(
+        "🤖 The request was made but no response was received `error.request` is an instance of XMLHttpRequest in the browser and an instance of http.ClientRequest in node.js 🐛"
+      );
+    } else {
+      console.log('Error', error.message);
+      message.channel.send(
+        "🤖 Something happened in setting up the request that triggered an Error 🐛"
+      );
+    }
+    console.log(error.config);
   }
 };

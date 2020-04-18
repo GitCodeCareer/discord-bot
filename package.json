@@ -13,18 +13,18 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^11.6.3",
     "dotenv": "^8.2.0",
-    "firebase": "^7.13.2",
+    "firebase": "^7.14.1",
     "handlebars": "^4.7.6",
     "module-alias": "^2.2.2",
-    "node-fetch": "2.6.0",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
     "colors": "^1.4.0",
-    "jest": "^24.9.0",
-    "nodemon": "^2.0.2"
+    "jest": "^25.3.0",
+    "nodemon": "^2.0.3"
   }
 }
