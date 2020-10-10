@@ -19,6 +19,7 @@
     "firebase": "^7.23.0",
     "handlebars": "^4.7.6",
     "module-alias": "^2.2.2",
+    "node-fetch": "2.6.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9"
   },
