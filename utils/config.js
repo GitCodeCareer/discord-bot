@@ -30,6 +30,8 @@ class Config {
     await DB.writeData('config', this.config)
   }
 
+  // Getters
+
   getBotToken() {
    return process.env.DISCORD_BOT_TOKEN
   }
